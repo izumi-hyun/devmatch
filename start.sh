@@ -1,5 +1,5 @@
 #!bin/bash
 
-git pull origin
+git pull origin master
 
 node server.js
