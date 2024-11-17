@@ -2,4 +2,4 @@
 
 git pull origin master
 
-node server.js
+node ./server/server.js
