@@ -16,9 +16,9 @@ function Header({ openModal, user, onLogout }) {
       <div className="header-content">
         <div className="logo">DevMatch</div>
         <nav className="nav-menu">
-          <a href="#" className="btn">프로젝트 찾기</a>
-          <a href="#" className="btn">팀원 찾기</a>
-          <a href="#" className="btn">커뮤니티</a>
+          <a href="/" className="btn">프로젝트 찾기</a>
+          <a href="#" className="btn" onClick={() => openModal('teamFinder')}>팀원 찾기</a> {/* "팀원 찾기" */}
+          <a href="#" className="btn">질문</a>
         </nav>
         <div className="auth-buttons">
           {user ? (
@@ -39,3 +39,4 @@ function Header({ openModal, user, onLogout }) {
 }
 
 export default Header;
+	
