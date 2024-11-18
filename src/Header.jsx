@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Header({ openModal, user, onLogout }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // 사용자가 로그인했는지 확인
-    if (user && user.username) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://devmatch.ddns.net:2000/auth/doLogout', {}, { withCredentials: true });
+      onLogout();
+    } catch (error) {
+      console.error('로그아웃 오류:', error.response?.data || error.message);
     }
-  }, [user]);
+  };
 
   return (
     <header>
@@ -22,10 +21,10 @@ function Header({ openModal, user, onLogout }) {
           <a href="#" className="btn">커뮤니티</a>
         </nav>
         <div className="auth-buttons">
-          {isLoggedIn ? (
+          {user ? (
             <>
               <span className="username">{user.username}</span>
-              <button className="btn btn-outline" onClick={onLogout}>로그아웃</button>
+              <button className="btn btn-outline" onClick={handleLogout}>로그아웃</button>
             </>
           ) : (
             <>
