@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function Modal({ modalType, closeModal, onLoginSuccess }) {
+  
   const isLogin = modalType === 'login';
   const [formData, setFormData] = useState({
     email: '',
@@ -40,7 +41,7 @@ function Modal({ modalType, closeModal, onLoginSuccess }) {
           role: formData.role,
           university: formData.university,
           grade: formData.grade,
-          profile_info: formData.profile_info
+          profile_info: formData.profile_info,
         });
         alert('회원가입 성공! 로그인 해주세요.');
         closeModal();

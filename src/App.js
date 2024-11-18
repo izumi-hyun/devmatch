@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from './Header.jsx';
 import HeroSection from './HeroSection.jsx';
 import SearchSection from './SearchSection.jsx';
@@ -7,19 +8,34 @@ import Modal from './Modal.jsx';
 import './index.css';
 
 function App() {
-  const [modalType, setModalType] = useState(null); // 로그인 or 회원가입 모달 상태 관리
-  const [user, setUser] = useState(null); // 로그인된 사용자 상태 관리
+  const [modalType, setModalType] = useState(null);
+  const [user, setUser] = useState(null);
 
   const openModal = (type) => setModalType(type);
   const closeModal = () => setModalType(null);
 
+  // useEffect를 사용해 페이지 로드 시 로그인 상태 확인
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const response = await axios.get('http://devmatch.ddns.net:2000/auth/checkSession', { withCredentials: true });
+        if (response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (error) {
+        console.error('로그인 상태 확인 오류:', error);
+      }
+    };
+    checkLoginStatus();
+  }, []); // 빈 배열은 컴포넌트가 처음 마운트될 때 한 번만 실행되게 함
+
   const handleLoginSuccess = (userData) => {
-    setUser(userData); // 로그인 성공 시 사용자 상태 업데이트
-    closeModal(); // 모달 닫기
+    setUser(userData);
+    closeModal();
   };
 
   const handleLogout = () => {
-    setUser(null); // 로그아웃 시 사용자 상태 초기화
+    setUser(null);
   };
 
   return (
