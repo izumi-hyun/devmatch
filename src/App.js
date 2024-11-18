@@ -11,31 +11,28 @@ function App() {
   const [modalType, setModalType] = useState(null);
   const [user, setUser] = useState(null);
 
+  // 컴포넌트 마운트 시 localStorage에서 사용자 정보 불러오기
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   const openModal = (type) => setModalType(type);
   const closeModal = () => setModalType(null);
 
-  // useEffect를 사용해 페이지 로드 시 로그인 상태 확인
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const response = await axios.get('http://devmatch.ddns.net:2000/auth/checkSession', { withCredentials: true });
-        if (response.data.user) {
-          setUser(response.data.user);
-        }
-      } catch (error) {
-        console.error('로그인 상태 확인 오류:', error);
-      }
-    };
-    checkLoginStatus();
-  }, []); // 빈 배열은 컴포넌트가 처음 마운트될 때 한 번만 실행되게 함
-
   const handleLoginSuccess = (userData) => {
     setUser(userData);
+    // 사용자 정보를 localStorage에 저장
+    localStorage.setItem('user', JSON.stringify(userData));
     closeModal();
   };
 
   const handleLogout = () => {
     setUser(null);
+    // localStorage에서 사용자 정보 제거
+    localStorage.removeItem('user');
   };
 
   return (
